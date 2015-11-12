@@ -1,0 +1,9 @@
+sudo systemd-nspawn --setenv=DISPLAY=:0 \
+               --setenv=XAUTHORITY=~/.Xauthority \
+               --bind-ro=$HOME/.Xauthority \
+               --bind=/tmp/.X11-unix \
+               --bind=/run/user/1000/pulse \
+               --bind=/home/dino/.Skype \
+               -bD ~/arch-tree \
+               -n \
+               --machine=jailzor
