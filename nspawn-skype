@@ -1,27 +1,28 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
-  exit
+if [ -t 0 ]; then
+	SUDO=sudo
+else
+	SUDO="gksu -u $(whoami)"
 fi
-
+echo $SUDO
 set -e
 
 DEST=/mnt/stor/vm/skype
 
 if [ ! -d "$DEST" ];then
-    sudo mkdir -p "$DEST/var/lib/pacman/";
-    echo sudo skype lib32-gtk2 | sudo pacman --arch x86_64 --root "$DEST" --cachedir /var/cache/pacman/pkg --config /etc/pacman.conf -Sy - --noconfirm
-    sudo systemd-nspawn -D "$DEST" groupadd skype
-    sudo systemd-nspawn -D "$DEST" useradd -g skype -G video,audio skype
-    sudo mkdir -p $DEST/home/skype/.config/pulse
-    sudo cp ~/.config/pulse/cookie $DEST/home/skype/.config/pulse/
-    sudo cp ~/.Xauthority $DEST/home/skype/
-    sudo chmod 755 -R $DEST/home/skype/
-    sudo chown -R 1000:1000 $DEST/home/skype/
+    $SUDO mkdir -p "$DEST/var/lib/pacman/";
+    echo $SUDO skype lib32-gtk2 | $SUDO pacman --arch x86_64 --root "$DEST" --cachedir /var/cache/pacman/pkg --config /etc/pacman.conf -Sy - --noconfirm
+    $SUDO systemd-nspawn -D "$DEST" groupadd skype
+    $SUDO systemd-nspawn -D "$DEST" useradd -g skype -G video,audio skype
+    $SUDO mkdir -p $DEST/home/skype/.config/pulse
+    $SUDO cp ~/.config/pulse/cookie $DEST/home/skype/.config/pulse/
+    $SUDO cp ~/.Xauthority $DEST/home/skype/
+    $SUDO chmod 755 -R $DEST/home/skype/
+    $SUDO chown -R 1000:1000 $DEST/home/skype/
 fi
 
-sudo systemd-nspawn -D "$DEST" \
+$SUDO systemd-nspawn -D "$DEST" \
     --bind=/tmp/.X11-unix \
     --bind=/run/user/1000/pulse \
     --bind=/dev/snd \

@@ -2,8 +2,8 @@
 [Desktop Entry]
 Name=Skype
 Comment=Skype Internet Telephony
-Exec=gksu /home/dino/nspawn-skype/nspawn-skype %U
-Icon=/home/dino/nspawn-skype/skype.png
+Exec=/home/dino/work/nspawn-skype/nspawn-skype
+Icon=/home/dino/work/nspawn-skype/skype.png
 Terminal=false
 Type=Application
 Encoding=UTF-8
